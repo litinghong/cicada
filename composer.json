@@ -1,0 +1,17 @@
+{
+    "name": "qxb/cicada",
+    "description": "RPC Framework",
+    "type": "library",
+    "authors": [
+        {
+            "name": "litinghong",
+            "email": "317803067@qq.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "qxb\\cicada\\": "src/"
+        }
+    }
+}
