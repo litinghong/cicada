@@ -53,7 +53,7 @@ class Scanner
                 } else {
                     $pathInfo = pathinfo($file);
                     if ($pathInfo['extension'] == 'php') {
-                        $clsName = str_replace('.class.php', '', $pathInfo['filename']);
+                        $clsName = str_replace('.class', '', $pathInfo['filename']);
                         $clsFullName = sprintf('%s\\%s', $namespace, $clsName);
                         $distiller
                             ->methodsWithModifiers(ReflectionMethod::IS_PUBLIC)

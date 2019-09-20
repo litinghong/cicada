@@ -8,7 +8,7 @@ class ClientTest extends TestCase
 {
     public function testClient()
     {
-        Config::setServer('http://127.0.0.1:6788/server.php');
+        Config::setServer('http://apiserver/Open/RPC/test');
         $client = new Client('aaa');
         try {
             $res = $client->entryPoint('a');
@@ -19,9 +19,10 @@ class ClientTest extends TestCase
     }
 
     public function testGetInterface(){
-        Config::setServer('http://127.0.0.1:6788/server.php');
+        Config::setServer('http://apiserver/Open/RPC/test');
         $client = new Client();
         $res = $client->getInterface();
-        echo json_encode($res);
+        file_put_contents('./test.zip', $res);
+        $this->assertNotEmpty($res);
     }
 }
