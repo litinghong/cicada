@@ -12,7 +12,9 @@ class Config
     /** @var array 需要扫描生成接口的路径  */
     private static $scanPackage = [];
     /** @var string 生成的接口文件保存临时目录 */
-    private static $savePath = '/tmp/cicada';
+    private static $tempPath = '/tmp/cicada';
+    /** @var string 作为客户端时,接口文件保存目录 */
+    private static $interfacePath = '';
     /** @var string 通讯密钥 */
     private static $token = '';
 
@@ -89,17 +91,17 @@ class Config
     /**
      * @return string
      */
-    public static function getSavePath()
+    public static function getTempPath()
     {
-        return self::$savePath;
+        return self::$tempPath;
     }
 
     /**
-     * @param string $savePath
+     * @param string $tempPath
      */
-    public static function setSavePath($savePath)
+    public static function setTempPath($tempPath)
     {
-        self::$savePath = $savePath;
+        self::$tempPath = $tempPath;
     }
 
     /**
@@ -116,5 +118,21 @@ class Config
     public static function setToken($token)
     {
         self::$token = $token;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getInterfacePath()
+    {
+        return self::$interfacePath;
+    }
+
+    /**
+     * @param string $interfacePath
+     */
+    public static function setInterfacePath($interfacePath)
+    {
+        self::$interfacePath = $interfacePath;
     }
 }

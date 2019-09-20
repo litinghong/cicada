@@ -58,7 +58,7 @@ class Server
         $scanner = new Scanner();
         $scanner->scanRpc();
 
-        $savePath = Config::getSavePath();
+        $savePath = Config::getTempPath();
         return file_get_contents($savePath . '/arch.zip');
     }
 

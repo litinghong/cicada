@@ -2,6 +2,8 @@
 
 namespace qxb\cicada;
 
+use Exception;
+
 class Client
 {
     private $client;
@@ -27,10 +29,29 @@ class Client
         return $this->client->invoke('entryPoint', $params);
     }
 
+    /**
+     * @throws Exception
+     */
     public function getInterface()
     {
+        if(!$interfacePath = Config::getInterfacePath()){
+            throw new Exception('接口文件保存路径未配置!');
+        }
+
         $token = Config::getToken();
+
         $params = [$token];
-        return $this->client->invoke('getInterface', $params);
+        if($res = $this->client->invoke('getInterface', $params)){
+            $saveFile = $interfacePath . 'arch.zip';
+            file_put_contents($saveFile, $res);
+            $zip = new Zipper();
+            if($zip->open($saveFile) !== true) {
+                throw new Exception('接口文件解压失败!');
+            }
+
+            $zip->extractTo($interfacePath);
+            $zip->close();
+            unlink($saveFile);
+        }
     }
 }

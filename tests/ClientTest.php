@@ -18,11 +18,17 @@ class ClientTest extends TestCase
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetInterface(){
         Config::setServer('http://apiserver/Open/RPC/test');
+        $savePath = '../runtime';
+        @mkdir($savePath);
+        Config::setInterfacePath(realpath($savePath));
+
         $client = new Client();
-        $res = $client->getInterface();
-        file_put_contents('./test.zip', $res);
-        $this->assertNotEmpty($res);
+        $client->getInterface();
+        $this->assertFileExists($savePath);
     }
 }

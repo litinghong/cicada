@@ -19,7 +19,7 @@ class Scanner
     public function scanRpc()
     {
         $scanPath = Config::getScanPackage();
-        $savePath = Config::getSavePath();
+        $savePath = Config::getTempPath();
 
         if (empty($scanPath)) return;
 
