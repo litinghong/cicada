@@ -14,9 +14,10 @@ class Scanner
 {
     /**
      * 扫描生成接口文件
+     * @param string|null $nsRoot 指定新的命名空间根目录
      * @throws Exception
      */
-    public function scanRpc()
+    public function scanRpc($nsRoot = null)
     {
         $scanPath = Config::getScanPackage();
         $savePath = Config::getTempPath();
@@ -25,7 +26,7 @@ class Scanner
 
         $this->clearSavePath($savePath);
         foreach ($scanPath as $package) {
-            $this->scanPath($package['path'], $package['namespace'], $savePath);
+            $this->scanPath($package['path'], $package['namespace'], $savePath, $nsRoot);
         }
 
         $this->archDir($savePath, $savePath . '/arch.zip');
@@ -36,11 +37,11 @@ class Scanner
      * @param string $fromPath 扫描路径
      * @param string $fromNamespace 命名空间
      * @param string $savePath 生成的接口文件保存路径
+     * @param string|null $toNamespace 生成的接口文件的命名空间
      * @throws Exception
      */
-    public function scanPath($fromPath, $fromNamespace, $savePath)
+    public function scanPath($fromPath, $fromNamespace, $savePath, $toNamespace = null)
     {
-        $toNamespace = Config::getAppName();
         if (!file_exists($savePath)) {
             if (!mkdir($savePath)) throw new Exception('mkdir path ' . $savePath . ' failure');
         }
@@ -50,7 +51,7 @@ class Scanner
             while (false !== ($file = readdir($handle))) {
                 if ($file == '.' || $file == '..') continue;
                 if (is_dir($fromPath . '/' . $file)) {
-                    $this->scanPath($fromPath . '/' . $file, $fromNamespace . '\\' . $file, $savePath . '/' . $file);
+                    $this->scanPath($fromPath . '/' . $file, $fromNamespace . '\\' . $file, $savePath . '/' . $file, $toNamespace);
                 } else {
                     $pathInfo = pathinfo($file);
                     if ($pathInfo['extension'] == 'php') {

@@ -45,18 +45,19 @@ class Server
 
     /**
      * 返回接口文件
-     * @param $token
+     * @param string $nsRoot
+     * @param string $token
      * @return false|string
      * @throws Exception
      */
-    public function getInterface($token)
+    public function getInterface($nsRoot, $token)
     {
         if(!$this->checkToken($token)) {
             throw new Exception('token error!');
         }
 
         $scanner = new Scanner();
-        $scanner->scanRpc();
+        $scanner->scanRpc($nsRoot);
 
         $savePath = Config::getTempPath();
         return file_get_contents($savePath . '/arch.zip');

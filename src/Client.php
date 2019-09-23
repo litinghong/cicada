@@ -30,9 +30,10 @@ class Client
     }
 
     /**
+     * @param null|string $nsRoot 新的命名空间根目录
      * @throws Exception
      */
-    public function getInterface()
+    public function getInterface($nsRoot = null)
     {
         if(!$interfacePath = Config::getInterfacePath()){
             throw new Exception('接口文件保存路径未配置!');

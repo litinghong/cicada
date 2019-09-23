@@ -30,7 +30,7 @@ class ScannerTest extends TestCase
     {
         Config::addScanPackage('./clazz', '\\clazz');
         $server = new Scanner();
-        $server->scanRpc();
+        $server->scanRpc('api\\test');
         $this->assertTrue(true);
     }
 }
