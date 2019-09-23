@@ -38,6 +38,10 @@ class Server
             throw new Exception('token error!');
         }
 
+        if(!$this->checkNamespace($class)) {
+            throw new Exception('class access deny!');
+        }
+
         if (!class_exists($class)) {
             throw new Exception(sprintf("class %s not found!", $class));
         }
@@ -73,5 +77,19 @@ class Server
 
     private function checkToken($token){
         return $this->token == $token;
+    }
+
+    /**
+     * 检查命名空间是否允许访问
+     * @param string $className
+     * @return bool
+     */
+    private function checkNamespace($className) {
+        $ns = Config::getScanPackage();
+        foreach ($ns as $namespace) {
+            if(strpos($namespace['namespace'], $className) !== 0) return true;
+        }
+
+        return false;
     }
 }
