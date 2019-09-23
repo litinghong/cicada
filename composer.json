@@ -9,9 +9,9 @@
         }
     ],
     "require": {
-        "litinghong/interface-distiller": "dev-master",
         "hprose/hprose": "^2.0",
-        "ext-zip": "*"
+        "ext-zip": "*",
+        "litinghong/interface-distiller": "dev-master"
     },
     "autoload": {
         "psr-4": {
