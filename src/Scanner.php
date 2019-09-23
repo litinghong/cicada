@@ -65,6 +65,8 @@ class Scanner
                             ->excludeInheritedMethods()
                             ->excludeMagicMethods()
                             ->excludeOldStyleConstructors()
+                            ->filterMethodDocByPattern(Config::getMatchMethodTag())
+                            ->filterClassDocByPattern(Config::getMatchClassTag())
                             ->saveAs(new SplFileObject(sprintf("%s/%s.php", $savePath, $toClsName), 'w'))
                             ->distill($fromCls, $toClsWithNs);
                         $distiller->reset();

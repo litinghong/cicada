@@ -17,6 +17,10 @@ class Config
     private static $interfacePath = '';
     /** @var string 通讯密钥 */
     private static $token = '';
+    /** @var null|string 匹配类的Doc名 */
+    private static $matchClassTag = null;
+    /** @var null|string 匹配方法的Doc名 */
+    private static $matchMethodTag = null;
 
     /**
      * 注册中心
@@ -37,6 +41,7 @@ class Config
     }
 
     /**
+     * 服务端
      * @return string
      */
     public static function getServer()
@@ -45,6 +50,7 @@ class Config
     }
 
     /**
+     * 服务端
      * @param string $server
      */
     public static function setServer($server)
@@ -53,6 +59,7 @@ class Config
     }
 
     /**
+     * 应用名
      * @return string
      */
     public static function getAppName()
@@ -61,6 +68,7 @@ class Config
     }
 
     /**
+     * 应用名
      * @param string $appName
      */
     public static function setAppName($appName)
@@ -69,6 +77,7 @@ class Config
     }
 
     /**
+     * 需要扫描生成接口的路径
      * @return array
      */
     public static function getScanPackage()
@@ -77,6 +86,7 @@ class Config
     }
 
     /**
+     * 需要扫描生成接口的路径
      * @param array $scanPackage
      */
     public static function setScanPackage($scanPackage)
@@ -84,11 +94,17 @@ class Config
         self::$scanPackage = $scanPackage;
     }
 
+    /**
+     * 需要扫描生成接口的路径
+     * @param string $path 路径
+     * @param string $namespace 路径所在的命名空间
+     */
     public static function addScanPackage($path, $namespace) {
         self::$scanPackage[] = ['path' => $path, 'namespace' => $namespace];
     }
 
     /**
+     * 生成的接口文件保存临时目录
      * @return string
      */
     public static function getTempPath()
@@ -97,6 +113,7 @@ class Config
     }
 
     /**
+     * 生成的接口文件保存临时目录
      * @param string $tempPath
      */
     public static function setTempPath($tempPath)
@@ -105,6 +122,7 @@ class Config
     }
 
     /**
+     * 通讯密钥
      * @return string
      */
     public static function getToken()
@@ -113,6 +131,7 @@ class Config
     }
 
     /**
+     * 通讯密钥
      * @param string $token
      */
     public static function setToken($token)
@@ -121,6 +140,7 @@ class Config
     }
 
     /**
+     * 作为客户端时,接口文件保存目录
      * @return string
      */
     public static function getInterfacePath()
@@ -129,10 +149,47 @@ class Config
     }
 
     /**
+     * 作为客户端时,接口文件保存目录
      * @param string $interfacePath
      */
     public static function setInterfacePath($interfacePath)
     {
         self::$interfacePath = $interfacePath;
+    }
+
+    /**
+     * 匹配类的Doc名
+     * @return string|null
+     */
+    public static function getMatchClassTag()
+    {
+        return self::$matchClassTag;
+    }
+
+    /**
+     * 匹配类的Doc名
+     * @param string|null $matchClassTag
+     */
+    public static function setMatchClassTag($matchClassTag)
+    {
+        self::$matchClassTag = $matchClassTag;
+    }
+
+    /**
+     * 匹配方法的Doc名
+     * @return string|null
+     */
+    public static function getMatchMethodTag()
+    {
+        return self::$matchMethodTag;
+    }
+
+    /**
+     * 匹配方法的Doc名
+     * @param string|null $matchMethodTag
+     */
+    public static function setMatchMethodTag($matchMethodTag)
+    {
+        self::$matchMethodTag = $matchMethodTag;
     }
 }

@@ -18,7 +18,9 @@ class ScannerTest extends TestCase
         $tmpPath = sprintf("%s/%s", $tmpPath, mt_rand(100000, 999999));
         mkdir($tmpPath);
         Config::setAppName('api');
-        $scanner->scanPath('./clazz', '\\clazz', $tmpPath, 'api');
+        Config::setMatchMethodTag('/@rpc/');
+        Config::setMatchClassTag('/@rpc/');
+        $scanner->scanPath('./clazz', 'clazz', $tmpPath, 'api');
         $this->assertTrue(true);
         $scanner->archDir($tmpPath, "/tmp/cicada/zip.zip");
         $this->assertTrue(file_exists("/tmp/cicada/zip.zip"));
