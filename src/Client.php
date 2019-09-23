@@ -41,7 +41,7 @@ class Client
 
         $token = Config::getToken();
 
-        $params = [$token];
+        $params = [$nsRoot, $token];
         if($res = $this->client->invoke('getInterface', $params)){
             $saveFile = $interfacePath . 'arch.zip';
             file_put_contents($saveFile, $res);
