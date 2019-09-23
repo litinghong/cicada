@@ -69,14 +69,13 @@ class Scanner
 
                         $distiller
                             ->methodsWithModifiers(ReflectionMethod::IS_PUBLIC)
-                            ->extendInterfaceFrom('Iterator, SeekableIterator')
                             ->excludeImplementedMethods()
                             ->excludeInheritedMethods()
                             ->excludeMagicMethods()
                             ->excludeOldStyleConstructors()
                             ->filterMethodDocByPattern(Config::getMatchMethodTag())
                             ->filterClassDocByPattern(Config::getMatchClassTag())
-                            ->saveAs(new SplFileObject(sprintf("%s/%s%s.php", $realSavePath, $this->saveSuffix, $toClsName), 'w'))
+                            ->saveAs(new SplFileObject(sprintf("%s/%s%s.php", $realSavePath, $toClsName, $this->saveSuffix), 'w'))
                             ->distill($fromCls, $toClsWithNs);
                         $distiller->reset();
                     }

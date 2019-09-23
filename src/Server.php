@@ -19,6 +19,7 @@ class Server
         $this->server = new \Hprose\Http\Server();
         $this->server->addFunction([$this, 'entryPoint']);
         $this->server->addFunction([$this, 'getInterface']);
+        $this->token = Config::getToken();
         $this->server->start();
     }
 
@@ -40,7 +41,14 @@ class Server
         if (!class_exists($class)) {
             throw new Exception(sprintf("class %s not found!", $class));
         }
-        return [$class, $method, $args];
+
+        if (method_exists($class, 'getInstance')) {
+            $clazz = $class::getInstance();
+            return call_user_func_array([$clazz, $method], $args);
+        } else {
+            $clazz = new $class();
+            return call_user_func_array([$clazz, $method], $args);
+        }
     }
 
     /**

@@ -15,6 +15,8 @@ class Config
     private static $tempPath = '/tmp/cicada';
     /** @var string 作为客户端时,接口文件保存目录 */
     private static $interfacePath = '';
+    /** @var string 作为客户端时,接口文件命名空间 */
+    private static $interfaceNamespace = '';
     /** @var string 通讯密钥 */
     private static $token = '';
     /** @var null|string 匹配类的Doc名 */
@@ -211,5 +213,23 @@ class Config
     public static function setSaveFileSuffix($saveFileSuffix)
     {
         self::$saveFileSuffix = $saveFileSuffix;
+    }
+
+    /**
+     * 作为客户端时,接口文件命名空间
+     * @return string
+     */
+    public static function getInterfaceNamespace()
+    {
+        return self::$interfaceNamespace;
+    }
+
+    /**
+     * 作为客户端时,接口文件命名空间
+     * @param string $interfaceNamespace
+     */
+    public static function setInterfaceNamespace($interfaceNamespace)
+    {
+        self::$interfaceNamespace = $interfaceNamespace;
     }
 }
