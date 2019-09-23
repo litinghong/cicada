@@ -56,7 +56,7 @@ class Scanner
                     if ($pathInfo['extension'] == 'php') {
                         $toClsName = str_replace('.class', '', $pathInfo['filename']);
                         $fromCls = sprintf('%s\\%s', $fromNamespace, $toClsName);
-                        $toClsWithNs = sprintf('%s%s\\%s', $toNamespace, $fromNamespace, $toClsName);
+                        $toClsWithNs = sprintf('%s\\%s\\%s', $toNamespace, $fromNamespace, $toClsName);
 
                         $distiller
                             ->methodsWithModifiers(ReflectionMethod::IS_PUBLIC)

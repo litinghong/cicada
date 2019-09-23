@@ -10,7 +10,7 @@ class Bar
     private $arg2;
 
     /**
-     * Bar constructor.
+     * @RPC Bar constructor.
      * @param $arg1
      * @param $arg2
      */
@@ -21,6 +21,7 @@ class Bar
     }
 
     /**
+     * @RPC
      * @return mixed
      */
     public function getArg1()
@@ -29,6 +30,7 @@ class Bar
     }
 
     /**
+     * @rpc
      * @param mixed $arg1
      */
     public function setArg1($arg1)

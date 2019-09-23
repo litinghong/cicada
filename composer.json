@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "gooh/interface-distiller": "dev-master",
+        "litinghong/interface-distiller": "dev-master",
         "hprose/hprose": "^2.0",
         "ext-zip": "*"
     },
