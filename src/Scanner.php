@@ -26,7 +26,8 @@ class Scanner
 
         $this->clearSavePath($savePath);
         foreach ($scanPath as $package) {
-            $this->scanPath($package['path'], $package['namespace'], $savePath, $nsRoot);
+            $realSavePath = sprintf("%s/%s", $savePath, str_replace('\\', '/', $nsRoot));
+            $this->scanPath($package['path'], $package['namespace'], $realSavePath, $nsRoot);
         }
 
         $this->archDir($savePath, $savePath . '/arch.zip');
@@ -43,7 +44,7 @@ class Scanner
     public function scanPath($fromPath, $fromNamespace, $savePath, $toNamespace = null)
     {
         if (!file_exists($savePath)) {
-            if (!mkdir($savePath)) throw new Exception('mkdir path ' . $savePath . ' failure');
+            if (!mkdir($savePath, 0777, true)) throw new Exception('mkdir path ' . $savePath . ' failure');
         }
 
         $distiller = new InterfaceDistiller();

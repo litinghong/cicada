@@ -28,9 +28,9 @@ class ScannerTest extends TestCase
 
     public function testScanRPC()
     {
-        Config::addScanPackage('./clazz', '\\clazz');
+        Config::addScanPackage('./clazz', 'clazz');
         $server = new Scanner();
-        $server->scanRpc('api\\test');
+        $server->scanRpc('api\\qixiubao');
         $this->assertTrue(true);
     }
 }
