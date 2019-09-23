@@ -33,28 +33,31 @@ class Scanner
 
     /**
      * 生成接口文件
-     * @param string $scanPath 扫描路径
-     * @param string $namespace 命名空间
+     * @param string $fromPath 扫描路径
+     * @param string $fromNamespace 命名空间
      * @param string $savePath 生成的接口文件保存路径
      * @throws Exception
      */
-    public function scanPath($scanPath, $namespace, $savePath)
+    public function scanPath($fromPath, $fromNamespace, $savePath)
     {
+        $toNamespace = Config::getAppName();
         if (!file_exists($savePath)) {
             if (!mkdir($savePath)) throw new Exception('mkdir path ' . $savePath . ' failure');
         }
 
         $distiller = new InterfaceDistiller();
-        if ($handle = opendir($scanPath)) {
+        if ($handle = opendir($fromPath)) {
             while (false !== ($file = readdir($handle))) {
                 if ($file == '.' || $file == '..') continue;
-                if (is_dir($scanPath . '/' . $file)) {
-                    $this->scanPath($scanPath . '/' . $file, $namespace . '\\' . $file, $savePath . '/' . $file);
+                if (is_dir($fromPath . '/' . $file)) {
+                    $this->scanPath($fromPath . '/' . $file, $fromNamespace . '\\' . $file, $savePath . '/' . $file);
                 } else {
                     $pathInfo = pathinfo($file);
                     if ($pathInfo['extension'] == 'php') {
-                        $clsName = str_replace('.class', '', $pathInfo['filename']);
-                        $clsFullName = sprintf('%s\\%s', $namespace, $clsName);
+                        $toClsName = str_replace('.class', '', $pathInfo['filename']);
+                        $fromCls = sprintf('%s\\%s', $fromNamespace, $toClsName);
+                        $toClsWithNs = sprintf('%s%s\\%s', $toNamespace, $fromNamespace, $toClsName);
+
                         $distiller
                             ->methodsWithModifiers(ReflectionMethod::IS_PUBLIC)
                             ->extendInterfaceFrom('Iterator, SeekableIterator')
@@ -62,8 +65,8 @@ class Scanner
                             ->excludeInheritedMethods()
                             ->excludeMagicMethods()
                             ->excludeOldStyleConstructors()
-                            ->saveAs(new SplFileObject(sprintf("%s/%s.php", $savePath, $clsName), 'w'))
-                            ->distill($clsFullName, $clsName);
+                            ->saveAs(new SplFileObject(sprintf("%s/%s.php", $savePath, $toClsName), 'w'))
+                            ->distill($fromCls, $toClsWithNs);
                         $distiller->reset();
                     }
                 }
@@ -89,16 +92,17 @@ class Scanner
         return true;
     }
 
-    private function clearSavePath($dirname) {
+    private function clearSavePath($dirname)
+    {
         if (is_dir($dirname)) $dirHandle = opendir($dirname);
         if (empty($dirHandle)) return false;
 
-        while($file = readdir($dirHandle)) {
+        while ($file = readdir($dirHandle)) {
             if ($file != "." && $file != "..") {
-                if (!is_dir($dirname."/".$file))
-                    unlink($dirname."/".$file);
+                if (!is_dir($dirname . "/" . $file))
+                    unlink($dirname . "/" . $file);
                 else
-                    $this->clearSavePath($dirname.'/'.$file);
+                    $this->clearSavePath($dirname . '/' . $file);
             }
         }
         closedir($dirHandle);
