@@ -1,7 +1,8 @@
 {
-    "name": "qxb/cicada",
+    "name": "litinghong/cicada",
     "description": "RPC Framework",
     "type": "library",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "litinghong",
