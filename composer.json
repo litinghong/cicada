@@ -9,6 +9,10 @@
             "email": "317803067@qq.com"
         }
     ],
+    "support": {
+        "source": "https://github.com/litinghong/cicada",
+        "issues": "https://github.com/litinghong/cicada/issues"
+    },
     "require": {
         "hprose/hprose": "^2.0",
         "ext-zip": "*",
