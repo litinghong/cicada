@@ -12,6 +12,8 @@ use ZipArchive;
 
 class Scanner
 {
+    private $saveSuffix = '';
+
     /**
      * 扫描生成接口文件
      * @param string|null $nsRoot 指定新的命名空间根目录
@@ -21,13 +23,13 @@ class Scanner
     {
         $scanPath = Config::getScanPackage();
         $savePath = Config::getTempPath();
+        $this->saveSuffix = Config::getSaveFileSuffix() ? ('.' . Config::getSaveFileSuffix()) : '';
 
         if (empty($scanPath)) return;
 
         $this->clearSavePath($savePath);
         foreach ($scanPath as $package) {
-            $realSavePath = sprintf("%s/%s", $savePath, str_replace('\\', '/', $nsRoot));
-            $this->scanPath($package['path'], $package['namespace'], $realSavePath, $nsRoot);
+            $this->scanPath($package['path'], $package['namespace'], $savePath, $savePath, $nsRoot);
         }
 
         $this->archDir($savePath, $savePath . '/arch.zip');
@@ -37,14 +39,15 @@ class Scanner
      * 生成接口文件
      * @param string $fromPath 扫描路径
      * @param string $fromNamespace 命名空间
-     * @param string $savePath 生成的接口文件保存路径
+     * @param string $saveRootPath 生成的接口文件保存路径
+     * @param string $saveSubPath
      * @param string|null $toNamespace 生成的接口文件的命名空间
      * @throws Exception
      */
-    public function scanPath($fromPath, $fromNamespace, $savePath, $toNamespace = null)
+    public function scanPath($fromPath, $fromNamespace, $saveRootPath, $saveSubPath, $toNamespace = null)
     {
-        if (!file_exists($savePath)) {
-            if (!mkdir($savePath, 0777, true)) throw new Exception('mkdir path ' . $savePath . ' failure');
+        if (!file_exists($saveRootPath)) {
+            if (!mkdir($saveRootPath, 0777, true)) throw new Exception('mkdir path ' . $saveRootPath . ' failure');
         }
 
         $distiller = new InterfaceDistiller();
@@ -52,13 +55,17 @@ class Scanner
             while (false !== ($file = readdir($handle))) {
                 if ($file == '.' || $file == '..') continue;
                 if (is_dir($fromPath . '/' . $file)) {
-                    $this->scanPath($fromPath . '/' . $file, $fromNamespace . '\\' . $file, $savePath . '/' . $file, $toNamespace);
+                    $this->scanPath($fromPath . '/' . $file, $fromNamespace . '\\' . $file, $saveRootPath, $saveSubPath . '/' . $file, $toNamespace);
                 } else {
                     $pathInfo = pathinfo($file);
                     if ($pathInfo['extension'] == 'php') {
                         $toClsName = str_replace('.class', '', $pathInfo['filename']);
                         $fromCls = sprintf('%s\\%s', $fromNamespace, $toClsName);
                         $toClsWithNs = sprintf('%s\\%s\\%s', $toNamespace, $fromNamespace, $toClsName);
+                        $realSavePath = $saveRootPath . '/' . str_replace('\\', '/', $fromNamespace);
+                        if (!file_exists($realSavePath)) {
+                            if (!mkdir($realSavePath, 0777, true)) throw new Exception('mkdir path ' . $realSavePath . ' failure');
+                        }
 
                         $distiller
                             ->methodsWithModifiers(ReflectionMethod::IS_PUBLIC)
@@ -69,7 +76,7 @@ class Scanner
                             ->excludeOldStyleConstructors()
                             ->filterMethodDocByPattern(Config::getMatchMethodTag())
                             ->filterClassDocByPattern(Config::getMatchClassTag())
-                            ->saveAs(new SplFileObject(sprintf("%s/%s.php", $savePath, $toClsName), 'w'))
+                            ->saveAs(new SplFileObject(sprintf("%s/%s%s.php", $realSavePath, $this->saveSuffix, $toClsName), 'w'))
                             ->distill($fromCls, $toClsWithNs);
                         $distiller->reset();
                     }

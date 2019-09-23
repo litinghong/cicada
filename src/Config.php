@@ -21,6 +21,8 @@ class Config
     private static $matchClassTag = null;
     /** @var null|string 匹配方法的Doc名 */
     private static $matchMethodTag = null;
+    /** @var null|string 生成的文件后缀 */
+    private static $saveFileSuffix = null;
 
     /**
      * 注册中心
@@ -191,5 +193,23 @@ class Config
     public static function setMatchMethodTag($matchMethodTag)
     {
         self::$matchMethodTag = $matchMethodTag;
+    }
+
+    /**
+     * 生成的文件后缀
+     * @return string|null
+     */
+    public static function getSaveFileSuffix()
+    {
+        return self::$saveFileSuffix;
+    }
+
+    /**
+     * 生成的文件后缀
+     * @param string|null $saveFileSuffix
+     */
+    public static function setSaveFileSuffix($saveFileSuffix)
+    {
+        self::$saveFileSuffix = $saveFileSuffix;
     }
 }
