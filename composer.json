@@ -24,11 +24,6 @@
             "clazz\\": "tests/clazz/"
         }
     },
-    "extra":{
-        "branch-alias":{
-            "dev-master":"master"
-        }
-    },
     "require-dev": {
         "phpunit/phpunit": "^7.5"
     }
