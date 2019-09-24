@@ -61,7 +61,9 @@ class Scanner
                     if ($pathInfo['extension'] == 'php') {
                         $toClsName = str_replace('.class', '', $pathInfo['filename']);
                         $fromCls = sprintf('%s\\%s', $fromNamespace, $toClsName);
+                        $fromCls = str_replace('\\\\', '\\', $fromCls);
                         $toClsWithNs = sprintf('%s\\%s\\%s', $toNamespace, $fromNamespace, $toClsName);
+                        $toClsWithNs = str_replace('\\\\', '\\', $toClsWithNs);
                         $realSavePath = $saveRootPath . '/' . str_replace('\\', '/', $fromNamespace);
                         if (!file_exists($realSavePath)) {
                             if (!mkdir($realSavePath, 0777, true)) throw new Exception('mkdir path ' . $realSavePath . ' failure');
