@@ -4,6 +4,7 @@ namespace qxb\cicada;
 
 use Exception;
 use ReflectionClass;
+use ReflectionException;
 
 class Client
 {
@@ -12,14 +13,21 @@ class Client
     private $clientNamespace = '';
     private $serverClsName = '';
 
+    /**
+     * Client constructor.
+     * @param null $instance
+     * @throws ReflectionException
+     */
     public function __construct($instance = null)
     {
         $server = Config::getServer();
         $this->token = Config::getToken();
         $this->clientNamespace = Config::getInterfaceNamespace();
 
-        $clsIf = new ReflectionClass($instance);
-        $this->serverClsName = str_replace($this->clientNamespace, '', $clsIf->getName());
+        if($instance) {
+            $clsIf = new ReflectionClass($instance);
+            $this->serverClsName = str_replace($this->clientNamespace, '', $clsIf->getName());
+        }
         $this->client = new \Hprose\Http\Client($server, false);
         return $this->client;
     }

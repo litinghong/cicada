@@ -230,6 +230,6 @@ class Config
      */
     public static function setInterfaceNamespace($interfaceNamespace)
     {
-        self::$interfaceNamespace = $interfaceNamespace;
+        self::$interfaceNamespace = str_replace("\\\\", "\\", $interfaceNamespace);
     }
 }
